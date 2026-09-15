@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estia Player</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>Estia Player</h1>
+      <div class="tabs">
+        <button class="tab active" data-playlist="fun">Fun</button>
+        <button class="tab" data-playlist="focus">Focus</button>
+      </div>
+    </header>
+
+    <main>
+      <div class="player">
+        <div class="video-wrap">
+          <iframe id="player-frame"
+            src=""
+            title="Now playing"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <div class="now-playing">
+          <div>
+            <p class="now-title" id="now-title">Pick a track</p>
+            <p class="now-artist" id="now-artist"></p>
+          </div>
+          <div class="controls">
+            <button id="prev-btn" title="Previous">⏮</button>
+            <button id="next-btn" title="Next">⏭</button>
+          </div>
+        </div>
+      </div>
+
+      <ul class="tracklist" id="tracklist"></ul>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
