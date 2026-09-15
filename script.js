@@ -19,11 +19,15 @@ const PLAYLISTS = {
 let currentPlaylist = "fun";
 let currentIndex = -1;
 
-const frame = document.getElementById("player-frame");
 const nowTitle = document.getElementById("now-title");
 const nowArtist = document.getElementById("now-artist");
+const playBtn = document.getElementById("play-btn");
 const tracklistEl = document.getElementById("tracklist");
 const tabs = document.querySelectorAll(".tab");
+
+function watchUrl(track) {
+  return `https://www.youtube.com/watch?v=${track.id}`;
+}
 
 function renderTracklist() {
   const tracks = PLAYLISTS[currentPlaylist];
@@ -31,9 +35,13 @@ function renderTracklist() {
 
   tracks.forEach((track, index) => {
     const li = document.createElement("li");
-    li.className = "track" + (index === currentIndex ? " active" : "");
 
-    const info = document.createElement("div");
+    const btn = document.createElement("button");
+    btn.className = "track";
+    btn.type = "button";
+    btn.setAttribute("aria-current", index === currentIndex ? "true" : "false");
+
+    const info = document.createElement("span");
     info.className = "track-info";
     info.innerHTML = `
       <span class="track-title">${track.title}</span>
@@ -42,54 +50,65 @@ function renderTracklist() {
 
     const badge = document.createElement("span");
     badge.className = "track-badge";
-    badge.textContent = index === currentIndex ? "▶ playing" : "";
+    badge.textContent = index === currentIndex ? "▶ queued" : "";
 
-    li.appendChild(info);
-    li.appendChild(badge);
-    li.addEventListener("click", () => playTrack(index));
+    btn.appendChild(info);
+    btn.appendChild(badge);
+    btn.addEventListener("click", () => selectTrack(index, true));
 
+    li.appendChild(btn);
     tracklistEl.appendChild(li);
   });
 }
 
-function playTrack(index) {
+function selectTrack(index, openTab) {
   const tracks = PLAYLISTS[currentPlaylist];
   const track = tracks[index];
   if (!track) return;
 
   currentIndex = index;
-  frame.src = `https://www.youtube.com/embed/${track.id}?autoplay=1`;
   nowTitle.textContent = track.title;
   nowArtist.textContent = track.artist;
+  playBtn.disabled = false;
   renderTracklist();
+
+  if (openTab) {
+    window.open(watchUrl(track), "_blank", "noopener");
+  }
 }
 
 function switchPlaylist(name) {
   currentPlaylist = name;
   currentIndex = -1;
-  frame.src = "";
-  nowTitle.textContent = "Pick a track";
-  nowArtist.textContent = "";
+  nowTitle.textContent = "Nothing queued yet";
+  nowArtist.textContent = "Pick a track below";
+  playBtn.disabled = true;
 
   tabs.forEach((tab) => {
-    tab.classList.toggle("active", tab.dataset.playlist === name);
+    tab.setAttribute("aria-selected", tab.dataset.playlist === name ? "true" : "false");
   });
 
   renderTracklist();
 }
 
+playBtn.addEventListener("click", () => {
+  if (currentIndex < 0) return;
+  const track = PLAYLISTS[currentPlaylist][currentIndex];
+  window.open(watchUrl(track), "_blank", "noopener");
+});
+
 document.getElementById("prev-btn").addEventListener("click", () => {
   if (currentIndex < 0) return;
   const tracks = PLAYLISTS[currentPlaylist];
   const prevIndex = (currentIndex - 1 + tracks.length) % tracks.length;
-  playTrack(prevIndex);
+  selectTrack(prevIndex, true);
 });
 
 document.getElementById("next-btn").addEventListener("click", () => {
   if (currentIndex < 0) return;
   const tracks = PLAYLISTS[currentPlaylist];
   const nextIndex = (currentIndex + 1) % tracks.length;
-  playTrack(nextIndex);
+  selectTrack(nextIndex, true);
 });
 
 tabs.forEach((tab) => {

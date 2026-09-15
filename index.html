@@ -9,37 +9,36 @@
 <body>
   <div class="app">
     <header>
-      <h1>Estia Player</h1>
-      <div class="tabs">
-        <button class="tab active" data-playlist="fun">Fun</button>
-        <button class="tab" data-playlist="focus">Focus</button>
+      <div class="brand">
+        <h1>Estia Player</h1>
+        <span class="brand-tag">fun &amp; focus, side by side</span>
+      </div>
+      <div class="tabs" role="tablist" aria-label="Playlist">
+        <button class="tab" role="tab" id="tab-fun" data-playlist="fun" aria-selected="true">Fun</button>
+        <button class="tab" role="tab" id="tab-focus" data-playlist="focus" aria-selected="false">Focus</button>
       </div>
     </header>
 
     <main>
       <div class="player">
-        <div class="video-wrap">
-          <iframe id="player-frame"
-            src=""
-            title="Now playing"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen>
-          </iframe>
-        </div>
-        <div class="now-playing">
-          <div>
-            <p class="now-title" id="now-title">Pick a track</p>
-            <p class="now-artist" id="now-artist"></p>
+        <div class="now-card">
+          <div class="now-icon">♪</div>
+          <div class="now-text">
+            <p class="now-title" id="now-title">Nothing queued yet</p>
+            <p class="now-artist" id="now-artist">Pick a track below</p>
           </div>
+          <button class="play-btn" id="play-btn" disabled>▶ Play on YouTube</button>
+        </div>
+        <div class="now-bar">
+          <span class="hint">Opens in a new tab</span>
           <div class="controls">
-            <button id="prev-btn" title="Previous">⏮</button>
-            <button id="next-btn" title="Next">⏭</button>
+            <button id="prev-btn" aria-label="Previous track">⏮</button>
+            <button id="next-btn" aria-label="Next track">⏭</button>
           </div>
         </div>
       </div>
 
-      <ul class="tracklist" id="tracklist"></ul>
+      <ul class="tracklist" id="tracklist" role="list"></ul>
     </main>
   </div>
 
