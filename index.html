@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estia Player</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="brand">
+        <h1>Estia Player</h1>
+        <span class="brand-tag">fun &amp; focus, side by side</span>
+      </div>
+      <div class="tabs" role="tablist" aria-label="Playlist">
+        <button class="tab" role="tab" id="tab-fun" data-playlist="fun" aria-selected="true">Fun</button>
+        <button class="tab" role="tab" id="tab-focus" data-playlist="focus" aria-selected="false">Focus</button>
+      </div>
+    </header>
+
+    <main>
+      <div class="player">
+        <div class="now-card">
+          <div class="now-icon">♪</div>
+          <div class="now-text">
+            <p class="now-title" id="now-title">Nothing queued yet</p>
+            <p class="now-artist" id="now-artist">Pick a track below</p>
+          </div>
+          <button class="play-btn" id="play-btn" disabled>▶ Play on YouTube</button>
+        </div>
+        <div class="now-bar">
+          <span class="hint">Opens in a new tab</span>
+          <div class="controls">
+            <button id="prev-btn" aria-label="Previous track">⏮</button>
+            <button id="next-btn" aria-label="Next track">⏭</button>
+          </div>
+        </div>
+      </div>
+
+      <ul class="tracklist" id="tracklist" role="list"></ul>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
