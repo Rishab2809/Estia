@@ -19,15 +19,11 @@ const PLAYLISTS = {
 let currentPlaylist = "fun";
 let currentIndex = -1;
 
+const videoWrap = document.getElementById("video-wrap");
 const nowTitle = document.getElementById("now-title");
 const nowArtist = document.getElementById("now-artist");
-const playBtn = document.getElementById("play-btn");
 const tracklistEl = document.getElementById("tracklist");
 const tabs = document.querySelectorAll(".tab");
-
-function watchUrl(track) {
-  return `https://www.youtube.com/watch?v=${track.id}`;
-}
 
 function renderTracklist() {
   const tracks = PLAYLISTS[currentPlaylist];
@@ -50,39 +46,43 @@ function renderTracklist() {
 
     const badge = document.createElement("span");
     badge.className = "track-badge";
-    badge.textContent = index === currentIndex ? "▶ queued" : "";
+    badge.textContent = index === currentIndex ? "▶ playing" : "";
 
     btn.appendChild(info);
     btn.appendChild(badge);
-    btn.addEventListener("click", () => selectTrack(index, true));
+    btn.addEventListener("click", () => playTrack(index));
 
     li.appendChild(btn);
     tracklistEl.appendChild(li);
   });
 }
 
-function selectTrack(index, openTab) {
+function playTrack(index) {
   const tracks = PLAYLISTS[currentPlaylist];
   const track = tracks[index];
   if (!track) return;
 
   currentIndex = index;
+  videoWrap.innerHTML = `<iframe
+      src="https://www.youtube.com/embed/${track.id}?autoplay=1"
+      title="${track.title}"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen></iframe>`;
   nowTitle.textContent = track.title;
   nowArtist.textContent = track.artist;
-  playBtn.disabled = false;
   renderTracklist();
-
-  if (openTab) {
-    window.open(watchUrl(track), "_blank", "noopener");
-  }
 }
 
 function switchPlaylist(name) {
   currentPlaylist = name;
   currentIndex = -1;
-  nowTitle.textContent = "Nothing queued yet";
-  nowArtist.textContent = "Pick a track below";
-  playBtn.disabled = true;
+  videoWrap.innerHTML = `<div class="placeholder">
+      <span class="note">♪</span>
+      <span>Pick a track below to start playing</span>
+    </div>`;
+  nowTitle.textContent = "Nothing playing";
+  nowArtist.textContent = "Select a track from the list";
 
   tabs.forEach((tab) => {
     tab.setAttribute("aria-selected", tab.dataset.playlist === name ? "true" : "false");
@@ -91,24 +91,18 @@ function switchPlaylist(name) {
   renderTracklist();
 }
 
-playBtn.addEventListener("click", () => {
-  if (currentIndex < 0) return;
-  const track = PLAYLISTS[currentPlaylist][currentIndex];
-  window.open(watchUrl(track), "_blank", "noopener");
-});
-
 document.getElementById("prev-btn").addEventListener("click", () => {
   if (currentIndex < 0) return;
   const tracks = PLAYLISTS[currentPlaylist];
   const prevIndex = (currentIndex - 1 + tracks.length) % tracks.length;
-  selectTrack(prevIndex, true);
+  playTrack(prevIndex);
 });
 
 document.getElementById("next-btn").addEventListener("click", () => {
   if (currentIndex < 0) return;
   const tracks = PLAYLISTS[currentPlaylist];
   const nextIndex = (currentIndex + 1) % tracks.length;
-  selectTrack(nextIndex, true);
+  playTrack(nextIndex);
 });
 
 tabs.forEach((tab) => {

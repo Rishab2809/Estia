@@ -21,16 +21,17 @@
 
     <main>
       <div class="player">
-        <div class="now-card">
-          <div class="now-icon">♪</div>
-          <div class="now-text">
-            <p class="now-title" id="now-title">Nothing queued yet</p>
-            <p class="now-artist" id="now-artist">Pick a track below</p>
+        <div class="video-wrap" id="video-wrap">
+          <div class="placeholder" id="placeholder">
+            <span class="note">♪</span>
+            <span>Pick a track below to start playing</span>
           </div>
-          <button class="play-btn" id="play-btn" disabled>▶ Play on YouTube</button>
         </div>
-        <div class="now-bar">
-          <span class="hint">Opens in a new tab</span>
+        <div class="now-playing">
+          <div class="now-text">
+            <p class="now-title" id="now-title">Nothing playing</p>
+            <p class="now-artist" id="now-artist">Select a track from the list</p>
+          </div>
           <div class="controls">
             <button id="prev-btn" aria-label="Previous track">⏮</button>
             <button id="next-btn" aria-label="Next track">⏭</button>
